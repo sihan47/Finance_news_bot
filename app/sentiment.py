@@ -14,12 +14,12 @@ logger = logging.getLogger(__name__)
 
 SUMMARY_PROMPT = """You are an assistant that condenses finance and markets news into a concise bulletin.
 
-For each article provided, output bullet points summarizing the key development and its likely market impact.
-Then output an overall sentiment classification for BTC, ETH, and broad market (one of: bullish, neutral, bearish) with optional confidence 0-100.
+Output the bullet points in Traditional Chinese, describing the key development and likely market impact.
+Then output an overall sentiment classification for BTC, ETH, and broad market (stance must stay in English: bullish, neutral, bearish) with optional confidence 0-100.
 
 Return the result strictly in JSON with:
 {
-  "highlights": ["- bullet", ...],
+  "highlights": ["- bullet (in Chinese)", ...],
   "market_sentiment": {
      "btc": {"stance": "bullish|neutral|bearish", "confidence": 0-100},
      "eth": {...},

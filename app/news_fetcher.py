@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Iterable, List, Protocol
 
 import httpx
+from httpx import HTTPStatusError
 
 
 @dataclass(slots=True)
@@ -51,7 +52,13 @@ class NewsAPIClient:
             params=params,
             headers={"X-Api-Key": self.api_key},
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except HTTPStatusError as exc:
+            # Handle rate limiting gracefully to avoid crashing the whole cycle.
+            if exc.response.status_code == 429:
+                return []
+            raise
         payload = response.json()
 
         results: List[NewsItem] = []
